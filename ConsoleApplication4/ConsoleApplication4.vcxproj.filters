@@ -24,6 +24,9 @@
     <ClInclude Include="Sudoku.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SudokuSolve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -33,6 +36,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sudoku.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SudokuSolve.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

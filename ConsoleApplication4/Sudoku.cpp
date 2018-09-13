@@ -4,27 +4,57 @@
 Sudoku::Sudoku()
 {
   //Initialize Sudoku object create 81 objects in memory
+  size = 0;
   for (int i = 0; i < 81; i++)
   {
 	sudokuObject[i] = new Node();
-	sudokuObject[i]->value = i;
+	sudokuObject[i]->value = 0;
 	sudokuObject[i]->numAdj = 0;
+	size++;
   }
   setRowAdjacencies();
   setColAdjacencies();
   setSquareAdjacencies();
 }
-void Sudoku::print()
+Sudoku::Sudoku(int *sudoku2obj)
 {
+  size = 0;
   for (int i = 0; i < 81; i++)
   {
-	if (i % 9 == 0 && i != 0)
+	sudokuObject[i] = new Node();
+	sudokuObject[i]->value = sudoku2obj[i];
+	sudokuObject[i]->numAdj = 0;
+	size++;
+  }
+
+  setRowAdjacencies();
+  setColAdjacencies();
+  setSquareAdjacencies();
+}
+Sudoku::Sudoku(const Sudoku &obj)
+{
+  size = obj.size;
+  for (int i = 0; i < 81; i++)
+  {
+	sudokuObject[i]->value = obj.sudokuObject[i]->value;
+	sudokuObject[i]->numAdj = obj.sudokuObject[i]->numAdj;
+	for (int j = 0; j < obj.sudokuObject[i]->numAdj; j++)
 	{
-	  std::cout << sudokuObject[i]->value << std::endl;
+	  sudokuObject[i]->adjacentNode[j]= obj.sudokuObject[i]->adjacentNode[j];
 	}
-	else
+  }
+}
+void Sudoku::print() const
+{
+  int count = 0;
+  for (int i = 0; i < 81; i++)
+  {
+	std::cout << sudokuObject[i]->value << " ";
+	count++;
+	if (count == 9)
 	{
-	  std::cout << sudokuObject[i]->value << " ";
+	  std::cout << std::endl;
+	  count = 0;
 	}
   }
 }
@@ -98,6 +128,22 @@ void Sudoku::setColAdjacencies()
 		sudokuObject[i]->adjacentNode[sudokuObject[i]->numAdj] = sudokuObject[i - j];
 		sudokuObject[i]->numAdj++;
 	  }
+	}
+  }
+}
+Node** Sudoku::getSudoku()
+{
+  return sudokuObject;
+}
+void Sudoku::copyNode(Node **output)
+{
+  for (int i = 0; i < 81; i++)
+  {
+	output[i]->value = sudokuObject[i]->value;
+	output[i]->numAdj = sudokuObject[i]->numAdj;
+	for (int j = 0; j < output[i]->numAdj; j++)
+	{
+	  output[i]->adjacentNode[j] = sudokuObject[i]->adjacentNode[j];
 	}
   }
 }
@@ -175,6 +221,62 @@ void Sudoku::setSquareAdjacencies()
 	}
   }
 }
+bool Sudoku::setSudokuAt(int index, int value)
+{
+  if (index > size || index < 0)
+  {
+	return 0;
+  }
+  else
+  {
+	sudokuObject[index]->value = value;
+	return 1;
+  }
+}
+bool Sudoku::setSudokuAt(int i, int j, int value)
+{
+  int index = i + j * sqrt(size);
+  if (index > size || index < 0)
+  {
+	return 0;
+  }
+  else
+  {
+	sudokuObject[index]->value = value;
+	return 1;
+  }
+}
+int Sudoku::getSudokuAt(int index) const
+{
+  if (index > size || index < 0)
+  {
+	return -1;
+  }
+  else
+  {
+	return 	sudokuObject[index]->value;
+  }
+}
+int Sudoku::getSudokuAt(int i, int j) const
+{
+  int index = i + j * sqrt(size);
+  if (index > size || index < 0)
+  {
+	return -1;
+  }
+  else
+  {
+	return 	sudokuObject[index]->value;
+  }
+}
+int Sudoku::getSize() const
+{
+  return size;
+}
 Sudoku::~Sudoku()
 {
+  for (int i = 0; i < 81; i++)
+  {
+	delete sudokuObject[i];
+  }
 }
