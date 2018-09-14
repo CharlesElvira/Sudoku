@@ -1,15 +1,22 @@
 #pragma once
 #include "Sudoku.h"
+#include <vector>
 class SudokuSolve
 {
 private:
-  int *emptyArray;
+  std::vector<int> *emptyVector;
   Node **tmpsdk;
-  int sizeEmptyArray;
+  Sudoku *sudoku;
+  Sudoku *solveSudoku;
+  int sizeEmptyVector;
 public:
   SudokuSolve();
   SudokuSolve(Sudoku *sdk);
-  Sudoku* solveSudoku();
+  bool isSudokuValid();
+  int getSizeEmptyVector() const;
+  void printEmptyVector() const;
+  void solve1( Node **node, std::vector<int> *emptyVec);
+  Sudoku* solve();
   virtual ~SudokuSolve();
 };
 

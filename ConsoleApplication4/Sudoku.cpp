@@ -33,15 +33,24 @@ Sudoku::Sudoku(int *sudoku2obj)
 }
 Sudoku::Sudoku(const Sudoku &obj)
 {
+  for (int i = 0; i < 81; i++)
+  {
+	sudokuObject[i] = new Node();
+	sudokuObject[i]->value = 0;
+	sudokuObject[i]->numAdj = 0;
+	size++;
+  }
+  setRowAdjacencies();
+  setColAdjacencies();
+  setSquareAdjacencies();
+
+
   size = obj.size;
   for (int i = 0; i < 81; i++)
   {
 	sudokuObject[i]->value = obj.sudokuObject[i]->value;
 	sudokuObject[i]->numAdj = obj.sudokuObject[i]->numAdj;
-	for (int j = 0; j < obj.sudokuObject[i]->numAdj; j++)
-	{
-	  sudokuObject[i]->adjacentNode[j]= obj.sudokuObject[i]->adjacentNode[j];
-	}
+
   }
 }
 void Sudoku::print() const
@@ -184,6 +193,7 @@ void Sudoku::setSquareAdjacencies()
 	  count2 = 0;
 	  count3 += 27;
 	}
+	
   }
   for (int i = 0; i < 81; i++)//Add square adjacencies and avoid duplicate adjacencies
   {
@@ -275,8 +285,6 @@ int Sudoku::getSize() const
 }
 Sudoku::~Sudoku()
 {
-  for (int i = 0; i < 81; i++)
-  {
-	delete sudokuObject[i];
-  }
+
+  delete[] sudokuObject;
 }
